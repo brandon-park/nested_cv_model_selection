@@ -153,7 +153,7 @@ def roc_auc(models, scoring:str, X_selected, y_selected):
     
     X_selected_train_scaled, X_selected_test_scaled, y_selected_train, y_selected_test = split_and_scale(X_selected,y_selected)
     
-    plt.figure(figsize=(10,5))
+    fig = plt.figure(figsize=(10,5))
     total_scores = dict()
 
     for name, model, param in models:
@@ -397,21 +397,20 @@ dt_clf.fit(X_train_scaled, y_train)
 
 # Draw bar chart for top 10 features
 feature_importances = pd.Series(dt_clf.feature_importances_, index=X.columns)
-feature_importances.nlargest(10).plot(kind='barh')
+fig = feature_importances.nlargest(10).plot(kind='barh').get_figure()
+fig.savefig("output.jpg")
 ```
 
 
-
-
-    <AxesSubplot:>
-
-
-
-
     
-![png](output_12_1.png)
+![png](output_12_0.png)
     
 
+
+
+```python
+
+```
 
 
 ```python
@@ -576,39 +575,39 @@ result_nestedcv = nested_cv(models, scoring = 'precision', X = X_selected, y = y
     ==================================================
     
 
-    100%|████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:00<00:00,  2.94it/s]
+    100%|████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:00<00:00,  2.97it/s]
     
 
     Average score of LOG: 0.922.
     
 
-    100%|████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:02<00:00,  1.39s/it]
+    100%|████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:02<00:00,  1.36s/it]
     
 
-    Average score of KNN: 0.901.
+    Average score of KNN: 0.9.
     
 
-    100%|████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:00<00:00,  2.90it/s]
+    100%|████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:00<00:00,  2.99it/s]
     
 
     Average score of DT: 0.886.
     
 
-    100%|████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:25<00:00, 12.73s/it]
+    100%|████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:25<00:00, 12.99s/it]
     
 
     Average score of SVC: 0.903.
     
 
-    100%|████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:14<00:00,  7.08s/it]
+    100%|████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:15<00:00,  7.78s/it]
     
 
     Average score of LGBM: 0.901.
     
 
-    100%|████████████████████████████████████████████████████████████████████████████████████| 2/2 [02:14<00:00, 67.37s/it]
+    100%|████████████████████████████████████████████████████████████████████████████████████| 2/2 [02:12<00:00, 66.23s/it]
 
-    Average score of NN: 0.892.
+    Average score of NN: 0.894.
     ==================================================
     
 
@@ -631,7 +630,7 @@ plt.legend()
 plt.xlabel("FPR")
 plt.ylabel("TPR")
 plt.title('ROC Curve of precision per model')
-plt.show()
+plt.savefig("output2.jpg")
 
 ```
 
@@ -641,13 +640,13 @@ plt.show()
     AUC score of KNN is 0.882
     AUC score of DT is 0.893
     AUC score of SVC is 0.841
-    AUC score of LGBM is 0.896
-    AUC score of NN is 0.862
+    AUC score of LGBM is 0.892
+    AUC score of NN is 0.872
     
 
 
     
-![png](output_22_1.png)
+![png](output_23_1.png)
     
 
 
@@ -689,16 +688,16 @@ final_result.sort_values('Rank')
   <tbody>
     <tr>
       <th>LGBM</th>
-      <td>0.900546</td>
-      <td>0.896409</td>
-      <td>0.898477</td>
+      <td>0.900662</td>
+      <td>0.892441</td>
+      <td>0.896551</td>
       <td>1</td>
     </tr>
     <tr>
       <th>KNN</th>
-      <td>0.900946</td>
+      <td>0.899606</td>
       <td>0.881976</td>
-      <td>0.891461</td>
+      <td>0.890791</td>
       <td>2</td>
     </tr>
     <tr>
@@ -710,9 +709,9 @@ final_result.sort_values('Rank')
     </tr>
     <tr>
       <th>NN</th>
-      <td>0.891692</td>
-      <td>0.862017</td>
-      <td>0.876854</td>
+      <td>0.894296</td>
+      <td>0.872249</td>
+      <td>0.883273</td>
       <td>4</td>
     </tr>
     <tr>
@@ -773,8 +772,8 @@ print("="*50)
     Valid data's shape: (921, 5)
     Fitting 10 folds for each of 10 candidates, totalling 100 fits
     ==================================================
-    Final model's Precision is 0.916
-    Final model's best parameter is {'LGBM__reg_lambda': 1, 'LGBM__num_leaves': 13, 'LGBM__n_estimators': 100, 'LGBM__max_depth': 4, 'LGBM__learning_rate': 0.3}
+    Final model's Precision is 0.917
+    Final model's best parameter is {'LGBM__reg_lambda': 10, 'LGBM__num_leaves': 8, 'LGBM__n_estimators': 100, 'LGBM__max_depth': 8, 'LGBM__learning_rate': 0.05}
     ==================================================
     
 
