@@ -181,7 +181,7 @@ def roc_auc(models, scoring:str, X_selected, y_selected):
 # Import data
 # https://archive.ics.uci.edu/ml/datasets/spambase
 
-df = pd.read_csv("spambase.data", header = None)
+df = pd.read_csv("data/spambase.data", header = None)
 X = df.iloc[:,:-1]
 y = df.iloc[:,-1]
 df.head()
@@ -549,11 +549,11 @@ models.append(('LGBM',
                 "LGBM__reg_lambda": [1,10, 50]}
               ))
 
-# models.append(('NN', 
-#                KerasClassifier(build_fn=create_model, verbose=0),
-#                {"NN__batch_size": [20, 60, 80, 100],
-#                 "NN__epochs": [10, 50, 100]}
-#               ))
+models.append(('NN', 
+               KerasClassifier(build_fn=create_model, verbose=0),
+               {"NN__batch_size": [20, 60, 80, 100],
+                "NN__epochs": [10, 50, 100]}
+              ))
 
 # https://machinelearningmastery.com/grid-search-hyperparameters-deep-learning-models-python-keras/
 ```
@@ -576,16 +576,16 @@ result_nestedcv = nested_cv(models, scoring = 'precision', X = X_selected, y = y
     ==================================================
     
 
-    100%|████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:00<00:00,  2.97it/s]
+    100%|████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:00<00:00,  2.94it/s]
     
 
     Average score of LOG: 0.922.
     
 
-    100%|████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:02<00:00,  1.40s/it]
+    100%|████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:02<00:00,  1.39s/it]
     
 
-    Average score of KNN: 0.9.
+    Average score of KNN: 0.901.
     
 
     100%|████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:00<00:00,  2.90it/s]
@@ -594,15 +594,21 @@ result_nestedcv = nested_cv(models, scoring = 'precision', X = X_selected, y = y
     Average score of DT: 0.886.
     
 
-    100%|████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:24<00:00, 12.24s/it]
+    100%|████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:25<00:00, 12.73s/it]
     
 
     Average score of SVC: 0.903.
     
 
-    100%|████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:14<00:00,  7.17s/it]
+    100%|████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:14<00:00,  7.08s/it]
+    
 
-    Average score of LGBM: 0.903.
+    Average score of LGBM: 0.901.
+    
+
+    100%|████████████████████████████████████████████████████████████████████████████████████| 2/2 [02:14<00:00, 67.37s/it]
+
+    Average score of NN: 0.892.
     ==================================================
     
 
@@ -632,10 +638,11 @@ plt.show()
     Train data's shape: (3680, 5)
     Valid data's shape: (921, 5)
     AUC score of LOG is 0.786
-    AUC score of KNN is 0.888
+    AUC score of KNN is 0.882
     AUC score of DT is 0.893
     AUC score of SVC is 0.841
-    AUC score of LGBM is 0.895
+    AUC score of LGBM is 0.896
+    AUC score of NN is 0.862
     
 
 
@@ -682,16 +689,16 @@ final_result.sort_values('Rank')
   <tbody>
     <tr>
       <th>LGBM</th>
-      <td>0.903184</td>
-      <td>0.895086</td>
-      <td>0.899135</td>
+      <td>0.900546</td>
+      <td>0.896409</td>
+      <td>0.898477</td>
       <td>1</td>
     </tr>
     <tr>
       <th>KNN</th>
-      <td>0.899606</td>
-      <td>0.887668</td>
-      <td>0.893637</td>
+      <td>0.900946</td>
+      <td>0.881976</td>
+      <td>0.891461</td>
       <td>2</td>
     </tr>
     <tr>
@@ -702,18 +709,25 @@ final_result.sort_values('Rank')
       <td>3</td>
     </tr>
     <tr>
+      <th>NN</th>
+      <td>0.891692</td>
+      <td>0.862017</td>
+      <td>0.876854</td>
+      <td>4</td>
+    </tr>
+    <tr>
       <th>SVC</th>
       <td>0.903153</td>
       <td>0.840568</td>
       <td>0.871861</td>
-      <td>4</td>
+      <td>5</td>
     </tr>
     <tr>
       <th>LOG</th>
       <td>0.921918</td>
       <td>0.786452</td>
       <td>0.854185</td>
-      <td>5</td>
+      <td>6</td>
     </tr>
   </tbody>
 </table>
@@ -760,7 +774,7 @@ print("="*50)
     Fitting 10 folds for each of 10 candidates, totalling 100 fits
     ==================================================
     Final model's Precision is 0.916
-    Final model's best parameter is {'LGBM__reg_lambda': 50, 'LGBM__num_leaves': 13, 'LGBM__n_estimators': 500, 'LGBM__max_depth': 8, 'LGBM__learning_rate': 0.2}
+    Final model's best parameter is {'LGBM__reg_lambda': 1, 'LGBM__num_leaves': 13, 'LGBM__n_estimators': 100, 'LGBM__max_depth': 4, 'LGBM__learning_rate': 0.3}
     ==================================================
     
 
