@@ -403,7 +403,7 @@ fig.savefig("output.jpg")
 
 
     
-![png](output_12_0.png)
+![png](output_12_0.jpg)
     
 
 
@@ -646,7 +646,7 @@ plt.savefig("output2.jpg")
 
 
     
-![png](output_23_1.png)
+![png](output_23_1.jpg)
     
 
 
